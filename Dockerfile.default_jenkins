@@ -1,0 +1,14 @@
+# Dockerfile to generate default jenkins
+FROM jenkins/jenkins:lts-jdk17
+
+# Docker vars
+ARG REF_DIR="/usr/share/jenkins/ref"
+
+# Install default plugin
+COPY --chown=jenkins:jenkins plugin.txt ${REF_DIR}/plugin.txt
+RUN jenkins-plugin-cli -f ${REF_DIR}/plugin.txt
+
+# Jobs, Users config
+COPY jobs ${REF_DIR}/jobs
+COPY users ${REF_DIR}/users
+COPY config.xml ${REF_DIR}/config.xml
